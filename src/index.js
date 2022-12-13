@@ -9,23 +9,15 @@ const refs = {
   countryInfo: document.querySelector('.country-info'),
 };
 
-function fetchCountries({ name }) {
-  return fetch('https://restcountries.com/v3.1/name/peru').then(response => {
-    return response.json();
-  });
-}
 refs.input.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 function onSearch(e) {
   e.preventDefault();
-  const onInput = e.target.value;
+  const onInput = e.target.value.trim();
   fetchCountries(onInput)
     .then(renderCountries)
     .catch(error => {
-      console.log(error);
+      Notify.warning('Oops, there is no country with that name');
     });
-  // .finally(() => {
-  //   refs.input.reset();
-  // });
 }
 
 function renderCountries(countries) {
@@ -57,9 +49,12 @@ function renderCountries(countries) {
       .join('');
     refs.countryInfo.innerHTML = countryInfoCard;
   }
+  if (refs.input.value === '') {
+    markupCountriesList = '';
+    countryInfoCard = '';
+    return;
+  }
 }
-
-// let data = response.text();
 
 // name.official - полное имя страны
 // capital - столица
