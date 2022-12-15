@@ -63,6 +63,8 @@ function renderCountries(countries) {
       )
       .join('');
     refs.countryInfo.innerHTML = countryInfoCard;
+  } else {
+    cleanCountryInfoCard();
   }
 }
 
